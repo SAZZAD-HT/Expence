@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(git init *)",
+      "Bash(git checkout *)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --yes)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --yes --project-name expense-manager)",
+      "Bash(npx create-next-app@latest temp-scaffold --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --yes.)",
+      "Bash(cp temp-scaffold/package.json .)",
+      "Bash(cp temp-scaffold/package-lock.json .)",
+      "Bash(cp temp-scaffold/tsconfig.json .)",
+      "Bash(cp temp-scaffold/next.config.ts .)",
+      "Bash(cp temp-scaffold/next-env.d.ts .)",
+      "Bash(cp -r temp-scaffold/app .)",
+      "Bash(cp -r temp-scaffold/public .)",
+      "Bash(cp -r temp-scaffold/node_modules .)",
+      "Bash(npm install *)",
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(npx shadcn@latest add button input label card dialog form select badge progress separator tabs alert --yes.)",
+      "Bash(npm run *)",
+      "Bash(npx prisma *)",
+      "Bash(node *)",
+      "Bash(git check-ignore *)"
+    ]
+  }
+}

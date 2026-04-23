@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Profile {
+  id         String   @id @db.Uuid
+  email      String
+  created_at DateTime @default(now()) @db.Timestamptz
+
+  @@map("profiles")
+}
+
+model BudgetSegment {
+  id                      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                 String    @db.Uuid
+  name                    String
+  monthly_limit_encrypted String
+  color_tag               String?
+  is_fixed_cost           Boolean   @default(false)
+  created_at              DateTime  @default(now()) @db.Timestamptz
+
+  category_mappings CategoryMapping[]
+  loans             Loan[]
+
+  @@map("budget_segments")
+}
+
+model CreditCard {
+  id                           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                      String    @db.Uuid
+  card_name_encrypted          String
+  credit_limit_encrypted       String
+  billing_cycle_day            Int
+  interest_free_days           Int       @default(45)
+  current_balance_encrypted    String
+  minimum_due_encrypted        String
+  existing_emi_count           Int       @default(0)
+  existing_emi_amount_encrypted String?
+  created_at                   DateTime  @default(now()) @db.Timestamptz
+
+  expenses Expense[]
+
+  @@map("credit_cards")
+}
+
+model CategoryMapping {
+  id                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                 String        @db.Uuid
+  category_name_encrypted String
+  segment_id              String?       @db.Uuid
+  created_at              DateTime      @default(now()) @db.Timestamptz
+
+  segment  BudgetSegment? @relation(fields: [segment_id], references: [id])
+  expenses Expense[]
+
+  @@map("category_mappings")
+}
+
+model Expense {
+  id                    String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String          @db.Uuid
+  amount_encrypted      String
+  category_id           String?         @db.Uuid
+  payment_method        String
+  credit_card_id        String?         @db.Uuid
+  description_encrypted String?
+  expense_date          String
+  created_at            DateTime        @default(now()) @db.Timestamptz
+
+  category    CategoryMapping? @relation(fields: [category_id], references: [id])
+  credit_card CreditCard?      @relation(fields: [credit_card_id], references: [id])
+
+  @@map("expenses")
+}
+
+model Loan {
+  id                      String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                 String        @db.Uuid
+  loan_name_encrypted     String
+  principal_encrypted     String
+  interest_rate_encrypted String
+  start_date              String
+  tenure_months           Int
+  emi_amount_encrypted    String
+  segment_id              String?       @db.Uuid
+  created_at              DateTime      @default(now()) @db.Timestamptz
+
+  segment BudgetSegment? @relation(fields: [segment_id], references: [id])
+
+  @@map("loans")
+}
+
+model MonthlySalary {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String   @db.Uuid
+  month            String
+  salary_encrypted String
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  @@unique([user_id, month])
+  @@map("monthly_salaries")
+}
