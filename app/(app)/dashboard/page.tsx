@@ -230,7 +230,6 @@ export default function DashboardPage() {
           {secondaryCards.map((c, i) => {
             const toneColor =
               c.tone === "cyan" ? "#00e5ff"
-              : c.tone === "magenta" ? "#ff2bd6"
               : c.tone === "lime" ? "#c6ff00"
               : c.tone === "warning" ? "#ffb300"
               : c.tone === "danger" ? "#ff3b5c"

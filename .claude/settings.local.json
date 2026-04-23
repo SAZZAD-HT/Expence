@@ -21,7 +21,8 @@
       "Bash(npm run *)",
       "Bash(npx prisma *)",
       "Bash(node *)",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "Bash(npx tsc *)"
     ]
   }
 }
