@@ -12,10 +12,14 @@ import {
   BarChart3,
   Lock,
   LogOut,
+  PiggyBank,
+  ShoppingBag,
+  Banknote,
 } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase";
 import { useSessionStore } from "@/store/session.store";
 import SessionKeyModal from "@/components/session-key-modal";
+import ModeToggle from "@/components/mode-toggle";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", Icon: LayoutDashboard },
@@ -23,6 +27,9 @@ const navItems = [
   { href: "/dashboard/budget", label: "Budget", Icon: PieChart },
   { href: "/dashboard/loans", label: "Loans", Icon: Landmark },
   { href: "/dashboard/credit-cards", label: "Cards", Icon: CreditCard },
+  { href: "/dashboard/cash", label: "Cash", Icon: Banknote },
+  { href: "/dashboard/savings", label: "Savings", Icon: PiggyBank },
+  { href: "/dashboard/procurement", label: "Wishlist", Icon: ShoppingBag },
   { href: "/dashboard/reports", label: "Reports", Icon: BarChart3 },
 ];
 
@@ -61,7 +68,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen text-[color:var(--color-text-primary)]">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 m-4 p-5 glass-card rounded-2xl sticky top-4 h-[calc(100vh-2rem)] self-start shrink-0">
+      <aside className="app-sidebar hidden lg:flex flex-col w-64 m-4 p-5 glass-card rounded-2xl sticky top-4 h-[calc(100vh-2rem)] self-start shrink-0">
         <div className="mb-8 px-1">
           <div className="flex items-center gap-2">
             <span
@@ -116,6 +123,7 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
         <hr className="hr-dashed my-4" />
         <div className="space-y-1">
+          <ModeToggle />
           <button
             onClick={() => clearSessionKey()}
             className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-[0.78rem] uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)] hover:text-[color:var(--color-neon-magenta)] hover:bg-white/[.03] transition-colors"
@@ -135,6 +143,45 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       {/* Main Content */}
       <main className="flex-1 min-w-0 pb-24 lg:pb-0">
+        {/* Paper-mode top bar — only rendered when .mode-paper is on html */}
+        <header className="app-topbar">
+          <span className="font-[family-name:var(--font-mono)] text-[0.72rem] tracking-[0.22em] uppercase text-slate-900">
+            Night Market
+          </span>
+          <nav className="hidden md:flex items-center gap-1 ml-2">
+            {navItems.map(({ href, label }) => {
+              const active = pathname === href;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`px-3 py-1.5 rounded-md text-[0.72rem] uppercase tracking-[0.14em] font-[family-name:var(--font-mono)] transition-colors ${
+                    active ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  }`}
+                >
+                  {label}
+                </Link>
+              );
+            })}
+          </nav>
+          <div className="ml-auto flex items-center gap-1">
+            <div className="w-auto">
+              <ModeToggle />
+            </div>
+            <button
+              onClick={() => clearSessionKey()}
+              className="px-3 py-1.5 rounded-md text-[0.72rem] uppercase tracking-[0.14em] font-[family-name:var(--font-mono)] text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+            >
+              Lock
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="px-3 py-1.5 rounded-md text-[0.72rem] uppercase tracking-[0.14em] font-[family-name:var(--font-mono)] text-slate-600 hover:text-red-600 hover:bg-slate-100"
+            >
+              Sign Out
+            </button>
+          </div>
+        </header>
         <div className="p-4 lg:p-8">{children}</div>
       </main>
 

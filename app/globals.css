@@ -18,9 +18,9 @@
   --color-warning: #ffb300;
   --color-danger: #ff3b5c;
 
-  --color-text-primary: #eef1ff;
-  --color-text-secondary: #8794b8;
-  --color-text-muted: #505876;
+  --color-text-primary: #cbd5e1;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -110,11 +110,11 @@
   html {
     font-family: var(--font-body), system-ui, sans-serif;
     background: #050510;
-    color: #eef1ff;
+    color: #cbd5e1;
   }
   body {
     background: #050510;
-    color: #eef1ff;
+    color: #cbd5e1;
     min-height: 100vh;
     position: relative;
     font-feature-settings: "ss01", "cv01", "cv11";
@@ -361,4 +361,198 @@
 @utility hr-dashed {
   border: none;
   border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================================================
+   Paper mode — editorial/minimal redesign.
+   Philosophy: off-white page, pure white "sheets" with hairline borders,
+   one accent (indigo-700), strong type hierarchy, generous breathing room.
+   Applied when <html class="mode-paper"> is set by ModeProvider.
+   ======================================================================== */
+
+/* Base surface ---------------------------------------------------------- */
+html.mode-paper,
+html.mode-paper body {
+  background: #faf6ef;       /* warm cream — like unbleached paper */
+  color: #292524;
+}
+html.mode-paper .aurora-bg,
+html.mode-paper .scanlines {
+  display: none;
+}
+
+/* Token overrides — warm stone neutrals + terracotta accent */
+html.mode-paper {
+  --color-text-primary: #1c1917;    /* stone-900 */
+  --color-text-secondary: #57534e;  /* stone-600 */
+  --color-text-muted: #a8a29e;      /* stone-400 */
+  --color-safe: #15803d;            /* green-700 — leaf */
+  --color-warning: #b45309;         /* amber-700 */
+  --color-danger: #991b1b;          /* red-800 — deep terracotta */
+  --color-neon-cyan: #9a3412;       /* orange-800 — burnt sienna accent */
+  --color-neon-magenta: #9a3412;
+  --color-neon-violet: #9a3412;
+  --color-neon-lime: #15803d;
+}
+
+/* Cards — "sheet of paper": warm white, hairline border, no blur ------- */
+html.mode-paper .glass-card,
+html.mode-paper .hero-card {
+  background: #fffdf8;          /* warm white, a hair warmer than page */
+  border: 1px solid #ece6dc;    /* warm stone hairline */
+  border-radius: 0.75rem;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+html.mode-paper .glass-card-hover,
+html.mode-paper .glass-card:hover {
+  transform: none;
+  border-color: #d6cfc2;
+  box-shadow: 0 1px 2px rgba(68, 52, 30, 0.04);
+}
+html.mode-paper .hero-card {
+  background: linear-gradient(180deg, #fffdf8, #f7f1e6);
+}
+html.mode-paper .hero-card::before { display: none; }
+
+/* Strip cyberpunk tick-marks entirely in paper mode */
+html.mode-paper .card-ticks::before,
+html.mode-paper .card-ticks::after { display: none; }
+
+/* Display digits — stone-900, tabular, no gradient; hero in burnt sienna */
+html.mode-paper .digits-grand,
+html.mode-paper .digits-hero {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  color: #1c1917;
+  filter: none;
+  font-feature-settings: "tnum", "ss01";
+  letter-spacing: -0.02em;
+}
+html.mode-paper .digits-hero {
+  color: #9a3412;              /* burnt sienna — the hero number */
+}
+
+/* Colored text — keep hue, drop glow */
+html.mode-paper .text-neon-cyan    { color: #9a3412; text-shadow: none; }
+html.mode-paper .text-neon-magenta { color: #9a3412; text-shadow: none; }
+html.mode-paper .text-neon-lime    { color: #15803d; text-shadow: none; }
+
+/* Kicker labels: warm stone, quiet */
+html.mode-paper .label-kicker {
+  color: #78716c;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  font-weight: 500;
+}
+
+/* Typography rhythm */
+html.mode-paper h1, html.mode-paper h2, html.mode-paper h3, html.mode-paper h4 {
+  color: #1c1917;
+  letter-spacing: -0.015em;
+}
+
+/* Chips — warm neutral pill */
+html.mode-paper .chip-neon {
+  color: #44403c;
+  background: #f5efe4;
+  border: 1px solid #ece6dc;
+  box-shadow: none;
+  font-weight: 500;
+}
+
+/* Divider */
+html.mode-paper .hr-dashed {
+  border-top: 1px solid #ece6dc;
+}
+
+/* Scrollbar — slim, warm */
+html.mode-paper ::-webkit-scrollbar { width: 8px; height: 8px; }
+html.mode-paper ::-webkit-scrollbar-thumb {
+  background: #d6cfc2;
+  border-radius: 999px;
+}
+html.mode-paper ::-webkit-scrollbar-thumb:hover { background: #a8a29e; }
+html.mode-paper ::selection {
+  background: #9a3412;
+  color: #ffffff;
+}
+
+/* Kill flicker / pulse */
+html.mode-paper .anim-flicker,
+html.mode-paper .anim-pulse-glow { animation: none; }
+
+/* Narrow, centered main column — editorial width */
+html.mode-paper main > div {
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-block: 2rem;
+}
+
+/* Topbar retired */
+.app-topbar { display: none !important; }
+
+/* Sidebar: warm paper look ------------------------------------------------ */
+html.mode-paper aside.app-sidebar {
+  background: #fffdf8;
+  border: 1px solid #ece6dc;
+  border-radius: 0.75rem;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html.mode-paper aside.app-sidebar nav a { border-radius: 0.5rem; }
+html.mode-paper aside.app-sidebar nav a:not(.nav-active):hover,
+html.mode-paper aside.app-sidebar button:hover {
+  background: #f5efe4;
+  color: #1c1917;
+}
+html.mode-paper aside.app-sidebar .nav-active {
+  background: #1c1917;
+  color: #fffdf8;
+  border-left: none;
+  box-shadow: none;
+}
+html.mode-paper aside.app-sidebar .nav-active svg,
+html.mode-paper aside.app-sidebar .nav-active span { color: #fffdf8 !important; }
+
+/* Brand wordmark: solid stone */
+html.mode-paper aside.app-sidebar h1 {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  color: #1c1917 !important;
+  animation: none !important;
+}
+html.mode-paper aside.app-sidebar .label-kicker { color: #78716c; }
+html.mode-paper aside.app-sidebar [style*="background-color: rgb(255, 43, 214)"],
+html.mode-paper aside.app-sidebar .anim-pulse-glow {
+  background: #9a3412 !important;
+  box-shadow: none !important;
+}
+
+/* Mobile bottom nav */
+html.mode-paper nav.lg\:hidden.fixed {
+  background: #fffdf8;
+  border: 1px solid #ece6dc;
+  box-shadow: 0 4px 16px rgba(68, 52, 30, 0.06);
+}
+
+/* Inputs */
+html.mode-paper input,
+html.mode-paper select,
+html.mode-paper textarea {
+  background: #fffdf8;
+  border: 1px solid #d6cfc2;
+  color: #1c1917;
+}
+html.mode-paper input:focus,
+html.mode-paper select:focus,
+html.mode-paper textarea:focus {
+  outline: none;
+  border-color: #9a3412;
+  box-shadow: 0 0 0 3px rgba(154, 52, 18, 0.15);
 }

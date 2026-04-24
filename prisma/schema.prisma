@@ -44,9 +44,45 @@ model CreditCard {
   existing_emi_amount_encrypted String?
   created_at                   DateTime  @default(now()) @db.Timestamptz
 
-  expenses Expense[]
+  expenses      Expense[]
+  card_emis     CardEmi[]
+  card_payments CardPayment[]
 
   @@map("credit_cards")
+}
+
+model CardEmi {
+  id                       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                  String   @db.Uuid
+  card_id                  String   @db.Uuid
+  name_encrypted           String
+  principal_encrypted      String
+  monthly_amount_encrypted String
+  tenure_months            Int
+  months_paid              Int      @default(0)
+  start_date               String
+  status                   String   @default("active")
+  created_at               DateTime @default(now()) @db.Timestamptz
+
+  credit_card CreditCard @relation(fields: [card_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, card_id])
+  @@map("card_emis")
+}
+
+model CardPayment {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String   @db.Uuid
+  card_id          String   @db.Uuid
+  amount_encrypted String
+  payment_date     String
+  note_encrypted   String?
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  credit_card CreditCard @relation(fields: [card_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, card_id])
+  @@map("card_payments")
 }
 
 model CategoryMapping {
@@ -94,6 +130,53 @@ model Loan {
   segment BudgetSegment? @relation(fields: [segment_id], references: [id])
 
   @@map("loans")
+}
+
+model ProcurementItem {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String   @db.Uuid
+  name_encrypted   String
+  budget_encrypted String
+  status           String   @default("planned")
+  notes_encrypted  String?
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  @@index([user_id, created_at])
+  @@map("procurement_items")
+}
+
+model SavingsGoal {
+  id                       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                  String   @db.Uuid
+  name_encrypted           String
+  target_amount_encrypted  String
+  current_amount_encrypted String
+  notes_encrypted          String?
+  created_at               DateTime @default(now()) @db.Timestamptz
+
+  @@index([user_id, created_at])
+  @@map("savings_goals")
+}
+
+model CashInflow {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id          String   @db.Uuid
+  amount_encrypted String
+  source_encrypted String
+  note_encrypted   String?
+  inflow_date      String
+  created_at       DateTime @default(now()) @db.Timestamptz
+
+  @@index([user_id, inflow_date])
+  @@map("cash_inflows")
+}
+
+model CashBalance {
+  user_id           String   @id @db.Uuid
+  balance_encrypted String
+  updated_at        DateTime @default(now()) @db.Timestamptz
+
+  @@map("cash_balances")
 }
 
 model MonthlySalary {

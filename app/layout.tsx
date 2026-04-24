@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Unbounded, JetBrains_Mono, IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
+import ModeProvider from "@/components/mode-provider";
 
 const unbounded = Unbounded({
   variable: "--font-display",
@@ -36,6 +37,7 @@ export default function RootLayout({
       className={`${unbounded.variable} ${jetbrains.variable} ${plex.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <ModeProvider />
         <div className="aurora-bg" aria-hidden />
         <div className="scanlines" aria-hidden />
         {children}

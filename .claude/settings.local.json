@@ -22,7 +22,12 @@
       "Bash(npx prisma *)",
       "Bash(node *)",
       "Bash(git check-ignore *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(npx tsx *)",
+      "Bash(node --env-file=.env.local -e ' *)",
+      "Bash(ls F:/OnGoingProjects/Expence/node_modules/pg)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

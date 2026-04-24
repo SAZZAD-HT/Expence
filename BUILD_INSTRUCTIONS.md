@@ -19,9 +19,9 @@ _Last updated: 2026-04-18_
 12. [x] Build dashboard with summary widgets + charts
 13. [x] Build reports page (all 5 report types)
 14. [x] Build admin panel
-15. [ ] Write README with deployment + env var instructions
-16. [ ] Test full encryption round-trip
-17. [ ] Deploy to Vercel + connect Supabase
+15. [x] Write README with deployment + env var instructions
+16. [x] Test full encryption round-trip (`scripts/encryption-roundtrip.ts`)
+17. [ ] Deploy to Vercel + connect Supabase (manual — see README "Deployment")
 
 ## Key Decisions
 - Two-layer AES-256 encryption (master key + user session key)

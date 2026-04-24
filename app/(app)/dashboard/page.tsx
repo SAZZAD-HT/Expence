@@ -8,6 +8,7 @@ import { createBrowserClient } from "@/lib/supabase";
 import SpendingBarChart from "@/components/charts/spending-bar-chart";
 import SegmentDonutChart from "@/components/charts/segment-donut-chart";
 import ExpenseForm from "@/components/expense-form";
+import SalaryCard from "@/components/salary-card";
 import { formatTaka } from "@/lib/format";
 
 async function getToken(): Promise<string | null> {
@@ -225,8 +226,9 @@ export default function DashboardPage() {
           </div>
         </article>
 
-        {/* Stack of 3 secondaries */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4">
+        {/* Stack of 4 secondaries (income + 3 existing) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+          <SalaryCard />
           {secondaryCards.map((c, i) => {
             const toneColor =
               c.tone === "cyan" ? "#00e5ff"
